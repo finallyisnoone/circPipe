@@ -6,9 +6,9 @@ setwd("/data1/yeying/m6a_circ/pancreatic")
 library(Biobase)
 ########cut off init
 p_value <- 0.05 # p value of FDR
-lfc <- 0.58  #logFC
+lfc <- lfc  #logFC
 args <-commandArgs(T)
-args[1] <- "matrix/11_7//filter_input_count.mat"
+#args[1] <- "matrix/11_7//filter_input_count.mat"
 
 ########load data
 countData1 <- as.data.frame(read_delim(args[1],delim = "\t"))
@@ -45,7 +45,7 @@ Circ_norm_edgeR=cpm(countData) ###norm expres_mat
 print(paste("all share circRNAs:",dim(shared_circ)[1]))
 
 ##############edgeR
-source("/data1/yeying/m6a_circ/script/R_function.R")
+source("./R_function.R")
 
 #sharedCirc_edgeR_tmp <- edgeR_test(expre_mat = shared_circ,group_mat = colData,test_method = "LRT" )
 sharedCirc_edgeR <-edgeR_test(expre_mat = shared_circ,group_mat = colData)
@@ -91,8 +91,8 @@ final_DE_res <- merge(final_DE,final_DE_res,by="id")
 final_DE_res$logFC <- as.numeric(final_DE_res$logFC)
 final_DE_res = mutate(final_DE_res,
                       expres_regu = case_when(
-                        logFC >= 0.58 ~ "up_regu",
-                        logFC <= -0.58 ~ "down_regu"
+                        logFC >= lfc ~ "up_regu",
+                        logFC <= -lfc ~ "down_regu"
                       ))
 
 #write.table(final_DE_res, file = "DE/DE_allcircRNA_filter_edgeR_10_17.xls",sep = "\t", quote = FALSE, row.names = F)

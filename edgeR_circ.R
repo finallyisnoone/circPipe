@@ -1,8 +1,7 @@
 library("readr")
-source("/data1/yeying/m6a_circ/script/R_function.R")
+source("./R_function.R")
 options(stringsAsFactors=F)
 
-setwd("/data1/yeying/m6a_circ/pancreatic")
 library(Biobase)
 ########cut off init
 p_value <- 0.05 # p value of FDR
@@ -102,5 +101,5 @@ DE_circ_gene = filter(circ_feature,id%in%DE_list)
 gene_list=unique(DE_circ_gene$symbol)
 length(gene_list)
 
-GoKegg(gene_list,"/data1/yeying/m6a_circ/pancreatic/DE/")
+GoKegg(gene_list,"./")
 
